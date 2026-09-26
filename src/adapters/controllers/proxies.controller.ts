@@ -63,8 +63,8 @@ export class ProxiesController {
     next: NextFunction,
   ): Promise<Response | void> {
     try {
-      const { namespace, target } = request.body;
-      const proxy = await this.createProxyUseCase.execute({ namespace, target });
+      const { namespace, target, cacheTtl } = request.body;
+      const proxy = await this.createProxyUseCase.execute({ namespace, target, cacheTtl });
       return response.status(201).json(proxy);
     } catch (error) {
       return next(error);
@@ -97,10 +97,11 @@ export class ProxiesController {
   ): Promise<Response | void> {
     try {
       const proxyId = String(request.params.proxyId);
-      const { namespace, target } = request.body;
+      const { namespace, target, cacheTtl } = request.body;
       const dto: UpdateProxyInput = {};
       if (namespace !== undefined) dto.namespace = namespace;
       if (target !== undefined) dto.target = target;
+      if (cacheTtl !== undefined) dto.cacheTtl = cacheTtl;
 
       const proxy = await this.updateProxyUseCase.execute(proxyId, dto);
 

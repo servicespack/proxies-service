@@ -36,6 +36,7 @@ describe('MongoDbProxyRepository (in-memory)', () => {
       const proxy = new ProxyEntity({
         namespace: faker.internet.domainWord(),
         target: faker.internet.url(),
+        cacheTtl: 120,
       });
 
       const result = await repository.create(proxy);
@@ -47,6 +48,7 @@ describe('MongoDbProxyRepository (in-memory)', () => {
       expect(found?.id).toBe(proxy.id);
       expect(found?.namespace).toBe(proxy.namespace);
       expect(found?.target).toBe(proxy.target);
+      expect(found?.cacheTtl).toBe(120);
     });
   });
 
@@ -123,20 +125,24 @@ describe('MongoDbProxyRepository (in-memory)', () => {
       const proxy = new ProxyEntity({
         namespace: 'old-namespace',
         target: 'https://old-target.local',
+        cacheTtl: 60,
       });
       await repository.create(proxy);
 
       const updated = await repository.update(proxy.id, {
         target: 'https://new-target.local',
+        cacheTtl: 30,
       });
 
       expect(updated).toBeInstanceOf(ProxyEntity);
       expect(updated?.id).toBe(proxy.id);
       expect(updated?.target).toBe('https://new-target.local');
       expect(updated?.namespace).toBe('old-namespace');
+      expect(updated?.cacheTtl).toBe(30);
 
       const found = await repository.findById(proxy.id);
       expect(found?.target).toBe('https://new-target.local');
+      expect(found?.cacheTtl).toBe(30);
     });
 
     it('should return undefined when proxy to update does not exist', async () => {

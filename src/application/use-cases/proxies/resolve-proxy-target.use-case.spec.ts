@@ -38,7 +38,7 @@ describe('ResolveProxyTargetUseCase', () => {
     const result = await useCase.execute(namespace);
 
     expect(mockProxyRepository.findByNamespace).toHaveBeenCalledWith(namespace);
-    expect(result).toBe(target);
+    expect(result).toBe(proxy);
   });
 
   it('should return undefined when proxy is not found by namespace', async () => {

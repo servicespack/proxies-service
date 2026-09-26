@@ -18,7 +18,11 @@ export class CreateProxyUseCase {
       throw new ProxyAlreadyExistsError(dto.namespace);
     }
 
-    const proxy = new ProxyEntity({ namespace: dto.namespace, target: dto.target });
+    const proxy = new ProxyEntity({
+      namespace: dto.namespace,
+      target: dto.target,
+      cacheTtl: dto.cacheTtl,
+    });
     const createdProxy = await this.proxyRepository.create(proxy);
     this.proxyEventBus.emitNewProxy(createdProxy);
     return createdProxy;

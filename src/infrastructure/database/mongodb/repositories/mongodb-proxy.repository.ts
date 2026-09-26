@@ -8,6 +8,7 @@ export interface MongoProxyDocument {
   _id: string;
   namespace: string;
   target: string;
+  cacheTtl?: number;
   createdAt: string;
 }
 
@@ -27,6 +28,7 @@ export class MongoDbProxyRepository implements ProxyRepository {
       id: doc._id,
       namespace: doc.namespace,
       target: doc.target,
+      cacheTtl: doc.cacheTtl,
       createdAt: doc.createdAt,
     });
   }
@@ -51,6 +53,7 @@ export class MongoDbProxyRepository implements ProxyRepository {
       _id: proxy.id,
       namespace: proxy.namespace,
       target: proxy.target,
+      cacheTtl: proxy.cacheTtl,
       createdAt: proxy.createdAt,
     });
     return proxy;
