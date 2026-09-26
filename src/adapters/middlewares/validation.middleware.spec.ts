@@ -64,8 +64,8 @@ describe('validation middleware', () => {
     expect(response.json).toHaveBeenCalledWith(
       expect.objectContaining({
         errors: expect.arrayContaining([
-          expect.objectContaining({ path: ['username'], message: 'Invalid input: expected string, received undefined' }),
-          expect.objectContaining({ path: ['age'], message: 'Invalid input: expected number, received undefined' }),
+          expect.objectContaining({ path: ['username'], message: 'Required' }),
+          expect.objectContaining({ path: ['age'], message: 'Required' }),
         ]),
       }),
     );
@@ -84,8 +84,8 @@ describe('validation middleware', () => {
     expect(response.json).toHaveBeenCalledWith(
       expect.objectContaining({
         errors: expect.arrayContaining([
-          expect.objectContaining({ path: ['username'], message: 'Too small: expected string to have >=3 characters' }),
-          expect.objectContaining({ path: ['age'], message: 'Too small: expected number to be >0' }),
+          expect.objectContaining({ path: ['username'], message: 'String must contain at least 3 character(s)' }),
+          expect.objectContaining({ path: ['age'], message: 'Number must be greater than 0' }),
         ]),
       }),
     );

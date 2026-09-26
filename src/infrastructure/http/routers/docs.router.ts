@@ -3,24 +3,25 @@ import swaggerUI from 'swagger-ui-express';
 
 import packageJson from '../../../../package.json';
 
-import swaggerJson from '@/docs/swagger.json';
+import { generateOpenApiDocument } from '@/docs/openapi-generator.js';
 
 const router = Router();
 
 const { ENABLE_SWAGGER = 'true' } = process.env;
 
 if (ENABLE_SWAGGER === 'true') {
+  const swaggerDocument = generateOpenApiDocument();
   router
     .use(
       swaggerUI.serve,
       swaggerUI.setup({
-        ...swaggerJson,
+        ...swaggerDocument,
         info: {
-          ...swaggerJson.info,
+          ...swaggerDocument.info,
           version: packageJson.version,
         },
         servers: [
-          ...swaggerJson.servers,
+          ...(swaggerDocument.servers || []),
           {
             url: 'http://localhost:3000',
           },
