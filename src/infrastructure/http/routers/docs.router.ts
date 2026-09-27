@@ -1,16 +1,16 @@
-import { Router } from 'express';
-import swaggerUI from 'swagger-ui-express';
+import { Router } from 'express'
+import swaggerUI from 'swagger-ui-express'
 
-import packageJson from '../../../../package.json';
+import { generateOpenApiDocument } from '@/docs/openapi-generator.js'
 
-import { generateOpenApiDocument } from '@/docs/openapi-generator.js';
+import packageJson from '../../../../package.json'
 
-const router = Router();
+const router = Router()
 
-const { ENABLE_SWAGGER = 'true' } = process.env;
+const { ENABLE_SWAGGER = 'true' } = process.env
 
 if (ENABLE_SWAGGER === 'true') {
-  const swaggerDocument = generateOpenApiDocument();
+  const swaggerDocument = generateOpenApiDocument()
   router
     .use(
       swaggerUI.serve,
@@ -27,7 +27,7 @@ if (ENABLE_SWAGGER === 'true') {
           },
         ],
       }),
-    );
+    )
 }
 
-export const docs = router;
+export const docs = router

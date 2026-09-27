@@ -1,38 +1,38 @@
-import { OpenApiGeneratorV3, OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
-import { z } from 'zod';
+import { OpenApiGeneratorV3, OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
+import { z } from 'zod'
 
-import { createProxySchema, proxySchema, updateProxySchema } from '@/adapters/validators/proxies.validator.js';
+import { createProxySchema, proxySchema, updateProxySchema } from '@/adapters/validators/proxies.validator.js'
 
-export const registry = new OpenAPIRegistry();
+export const registry = new OpenAPIRegistry()
 
 // 1. Security Schemes
 const tokenSecurity = registry.registerComponent('securitySchemes', 'Token', {
   type: 'apiKey',
   in: 'query',
   name: 'token',
-});
+})
 
 // 2. Component Schemas Registration (so they appear in #/components/schemas)
-registry.register('ProxyParams', createProxySchema);
-registry.register('UpdateProxyParams', updateProxySchema);
-registry.register('Proxy', proxySchema);
+registry.register('ProxyParams', createProxySchema)
+registry.register('UpdateProxyParams', updateProxySchema)
+registry.register('Proxy', proxySchema)
 
 // 3. Error Schemas Registration
 const badRequestSchema = registry.register('BadRequest', z.object({
   errors: z.array(z.object({})),
-}));
+}))
 
 const conflictSchema = registry.register('Conflict', z.object({
-  error: z.string().openapi({ example: "Proxy with namespace 'users' already exists" }),
-}));
+  error: z.string().openapi({ example: 'Proxy with namespace \'users\' already exists' }),
+}))
 
 const notFoundSchema = registry.register('NotFound', z.object({
   error: z.string().openapi({ example: 'Not found' }),
-}));
+}))
 
 const unauthorizedSchema = registry.register('Unauthorized', z.object({
   error: z.string().openapi({ example: 'Unauthorized' }),
-}));
+}))
 
 // 4. Paths Registration
 // GET /
@@ -53,7 +53,7 @@ registry.registerPath({
       },
     },
   },
-});
+})
 
 // GET /proxies
 registry.registerPath({
@@ -79,7 +79,7 @@ registry.registerPath({
       },
     },
   },
-});
+})
 
 // POST /proxies
 registry.registerPath({
@@ -130,7 +130,7 @@ registry.registerPath({
       },
     },
   },
-});
+})
 
 // GET /proxies/{proxyId}
 registry.registerPath({
@@ -169,7 +169,7 @@ registry.registerPath({
       },
     },
   },
-});
+})
 
 // PATCH /proxies/{proxyId}
 registry.registerPath({
@@ -231,7 +231,7 @@ registry.registerPath({
       },
     },
   },
-});
+})
 
 // DELETE /proxies/{proxyId}
 registry.registerPath({
@@ -270,10 +270,10 @@ registry.registerPath({
       },
     },
   },
-});
+})
 
 export function generateOpenApiDocument() {
-  const generator = new OpenApiGeneratorV3(registry.definitions);
+  const generator = new OpenApiGeneratorV3(registry.definitions)
 
   return generator.generateDocument({
     openapi: '3.0.3',
@@ -283,5 +283,5 @@ export function generateOpenApiDocument() {
       version: '1.0.0', // overridden by package.json version in docs.router.ts
     },
     servers: [],
-  });
+  })
 }

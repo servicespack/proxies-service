@@ -1,13 +1,16 @@
 {
   "name": "@servicespack/proxies-service",
+  "type": "module",
   "version": "4.3.33",
   "private": true,
+  "author": "ServicesPack <https://github.com/servicespack>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/gabrielrufino",
   "main": "dist/index.mjs",
-  "type": "module",
   "scripts": {
     "build": "tsdown",
-    "lint": "npx eslint . --ext .js,.ts",
-    "lint:fix": "npm run lint -- --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "start": "node --env-file-if-exists=.env dist/index.mjs",
     "start:dev": "tsx watch --env-file-if-exists=.env src/index.ts | pino-pretty",
     "test": "vitest run",
@@ -16,8 +19,6 @@
     "test:watch": "vitest",
     "prepare": "husky"
   },
-  "author": "Gabriel Rufino <contato@gabrielrufino.com>",
-  "license": "MIT",
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "7.3.0",
     "cors": "2.8.5",
@@ -33,10 +34,10 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "9.5.1",
     "@commitlint/cli": "19.4.1",
     "@commitlint/config-conventional": "19.4.1",
     "@faker-js/faker": "7.6.0",
-    "@gabrielrufino/eslint-config": "1.6.0",
     "@stryker-mutator/core": "10.0.0",
     "@stryker-mutator/vitest-runner": "10.0.0",
     "@types/cors": "2.8.19",
@@ -45,11 +46,8 @@
     "@types/node": "24.10.0",
     "@types/supertest": "7.2.1",
     "@types/swagger-ui-express": "4.1.8",
-    "@typescript-eslint/eslint-plugin": "7.18.0",
-    "@typescript-eslint/parser": "7.18.0",
     "@vitest/coverage-v8": "4.1.11",
-    "eslint": "8.57.0",
-    "eslint-plugin-vitest": "0.5.4",
+    "eslint": "10.11.0",
     "husky": "9.1.5",
     "jsdoc": "4.0.3",
     "mongodb-memory-server": "11.3.0",
@@ -60,6 +58,5 @@
     "tsx": "4.20.6",
     "typescript": "5.9.3",
     "vitest": "4.1.11"
-  },
-  "funding": "https://github.com/sponsors/gabrielrufino"
+  }
 }

@@ -1,6 +1,6 @@
-import type { ProxyEntity } from '@/domain/entities/proxy.entity.js';
-import type { ProxyEventBus } from '@/domain/events/proxy.events.js';
-import type { ProxyRepository } from '@/domain/repositories/proxy.repository.js';
+import type { ProxyEntity } from '@/domain/entities/proxy.entity.js'
+import type { ProxyEventBus } from '@/domain/events/proxy.events.js'
+import type { ProxyRepository } from '@/domain/repositories/proxy.repository.js'
 
 export class DeleteProxyUseCase {
   constructor(
@@ -9,12 +9,12 @@ export class DeleteProxyUseCase {
   ) {}
 
   async execute(id: string): Promise<ProxyEntity | undefined> {
-    const deletedProxy = await this.proxyRepository.delete(id);
+    const deletedProxy = await this.proxyRepository.delete(id)
 
     if (deletedProxy) {
-      this.proxyEventBus.emitDeletedProxy(deletedProxy);
+      this.proxyEventBus.emitDeletedProxy(deletedProxy)
     }
 
-    return deletedProxy;
+    return deletedProxy
   }
 }
