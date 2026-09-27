@@ -6,5 +6,5 @@ test
 # Files
 Dockerfile
 config.json
-jest.config.js
+vitest.config.ts
 nodemon.json

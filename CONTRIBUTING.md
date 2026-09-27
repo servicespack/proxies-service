@@ -1,21 +1,21 @@
-# Node Proxy - Contributing
+# Proxies Service - Contributing
 
 1. Clone repo and install dependencies
 
-```bash
-git clone https://github.com/gabrielrufino/node-proxy
-cd node-proxy
+```sh
+git clone https://github.com/servicespack/proxies-service
+cd proxies-service
 npm ci
 ```
 
 2. Setup environment
 
-```bash
+```sh
 cp .env.example .env
 ```
 
 3. Start service
 
-```bash
+```sh
 npm run start:dev
 ```

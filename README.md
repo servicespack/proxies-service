@@ -1,51 +1,79 @@
-![Node Proxy](https://drive.google.com/uc?export=view&id=14dw6D75qaUuItbnmhNGg7wx9Eds_DiEm)
+# Proxies Service
 
 ---
 
-* Reverse proxy
-* Create proxies dynamically
-* Prometheus metrics
-* Procted by [helmet](https://helmetjs.github.io/)
-* Graceful Shutdown
+* Dynamic reverse proxy
+* Configurable persistence drivers (LowDB, MongoDB)
+* OpenAPI / Swagger documentation (`/docs`)
+* Prometheus metrics (`/metrics`)
+* Protected by [helmet](https://helmetjs.github.io/)
+* Graceful shutdown
+
+## How it works
+
+Proxies Service dynamically routes incoming HTTP requests based on the first path segment (`/:namespace`):
+
+1. Register a proxy pointing a `namespace` to a `target` URL (e.g. `users` ➔ `https://users.yourmicroservices.dev`).
+2. Any request sent to `http://localhost:3000/users/path?query=val` is transparently proxied to `https://users.yourmicroservices.dev/path?query=val`.
 
 ## Getting started
 
-Start a proxy usig docker:
+Start the service using Docker:
 
-```bash
+```sh
 docker container run \
   -p 3000:3000 \
-  -v "node-proxy:/usr/src/app/" \
+  -v "proxies-service-data:/usr/src/app/data" \
+  -e CONFIG_PATH=/usr/src/app/data/config.json \
+  -e TOKEN=your-secret-token \
   -e NODE_ENV=production \
-  --name node-proxy \
-  gabrielrufino/node-proxy
+  --name proxies-service \
+  servicespack/proxies-service
 ```
 
-## API
+> **Note:** `TOKEN` is required on startup when management routes are enabled (`ENABLE_PROXIES_CRUD=true`).
 
-These are one of the routes for managing the proxy server. You can see the rest of them in the swagger docs.
+## API Documentation
 
-### Ping route
+Interactive API documentation and full schema references are available via Swagger UI at:
 
-> GET /
+> **http://localhost:3000/docs**
+
+### Authentication
+
+Management routes under `/proxies` are protected and require the secret token passed via query parameter:
+
+```sh
+?token=<TOKEN>
+```
+
+### Healthcheck
+
+A lightweight ping endpoint is available at the root:
+
+> `GET /`
 
 Response:
 
 ```json
-{"I":"am alive"}
-```
-
-### Create a proxy
-
-> POST /proxies
-
-```json
 {
-  "namespace": "users",
-  "target": "https://users.yourmicroservices.dev"
+  "I": "am alive"
 }
 ```
 
-## LICENSE
+## Environment Variables
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `PORT` | HTTP server port | `3000` |
+| `TOKEN` | Secret authentication token | Required if `ENABLE_PROXIES_CRUD=true` |
+| `DATABASE_DRIVER` | Database storage driver (`lowdb` or `mongodb`) | `lowdb` |
+| `MONGODB_URI` | MongoDB connection string | `mongodb://127.0.0.1:27017` |
+| `MONGODB_DATABASE` | MongoDB database name | `proxies` |
+| `ENABLE_PROXIES_CRUD` | Enable `/proxies` management endpoints | `'true'` |
+| `ENABLE_METRICS_ROUTER` | Enable `/metrics` Prometheus endpoint | `'false'` |
+| `ENABLE_SWAGGER` | Enable `/docs` Swagger UI endpoint | `'true'` |
+
+## License
 
 MIT

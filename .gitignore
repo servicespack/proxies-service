@@ -105,3 +105,6 @@ dist
 
 # Others
 config.json
+
+.stryker-tmp/
+reports/
